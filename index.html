@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>まーもせっと｜投稿デスク</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f6fa;color:#20283b;font:16px/1.6 system-ui,sans-serif}main{max-width:1420px;margin:auto;padding:26px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}h1,h2,p{margin:0}h1{font-size:clamp(22px,3vw,36px)}h2{font-size:23px}.clock,.muted{color:#556078}.layout{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}.stack{display:grid;gap:12px;align-content:start}article,.banner{background:#fff;border:1px solid #dfe4ee;border-radius:18px;padding:17px 20px;box-shadow:0 3px 12px #172b4b08}article{border-left:5px solid var(--accent)}.row,.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.row{justify-content:space-between}.identity{display:flex;align-items:center;gap:9px}.mark{border-radius:9px;background:var(--accent);color:#fff;padding:1px 9px;font-weight:800}.meta{font-size:14px;font-weight:700;color:#526079}.copytext{white-space:pre-wrap;margin:10px 0;font-size:15px}.actions{margin-top:10px}button,a.button{font:inherit;font-size:14px;font-weight:700;cursor:pointer;padding:7px 12px;border:1px solid #cfd7e6;border-radius:9px;background:#fff;color:#23334e;text-decoration:none}button.primary{background:#2857c6;color:white;border-color:#2857c6}button.done{background:#e9f8ee;color:#195d37}button:focus-visible,a:focus-visible{outline:3px solid #638af9;outline-offset:2px}.banner{margin-bottom:14px}#toast{position:fixed;bottom:16px;right:16px;background:#185532;color:white;padding:10px 16px;border-radius:10px;z-index:2;max-width:90vw}canvas{width:65px;height:auto;border-radius:6px;border:1px solid #e4e8f0}.frames{display:flex;gap:8px;margin-top:10px}details{margin:10px 0}summary{cursor:pointer;color:#354a77}.small{font-size:13px}.pick{display:block;margin:8px 0}.late{color:#983419}@media(max-width:800px){.layout{grid-template-columns:1fr}main{padding:12px}header{align-items:flex-start;flex-direction:column}}
+</style><main><header><div><p class="muted">まーもせっと｜子育てパパの秘密基地</p><h1>投稿デスク</h1></div><div class="clock"><strong id="clock"></strong><br><span>11/24 初回3本 · 17:00目標</span></div></header>
+<div id="banner" class="banner"></div><div class="layout"><section id="social" class="stack"></section><aside id="notes"></aside></div><p class="small muted" style="margin-top:12px">配信済みの記録はこのブラウザに保存。ボタンはSNSへの投稿を実行しません。</p></main><div id="toast" role="status" hidden></div>
+<script>
+const jp=(h,m)=>Date.parse('2026-11-24T'+h+':'+m+':00+09:00');
+const first='3歳児がいるパパの三種の神器。\nスマホ、財布、おしり拭き。\n\n子どもが麦茶をこぼした瞬間、ビーチフラッグばりに夫婦でバッグに手を伸ばす。\n\n俺がファスナー開けたとき、ママはもう拭いてる。\n\nあ、俺のおしり拭き、ママのおしり拭きが切れたときの予備だったんだ。';
+const firstReply='俺もおしり拭きは持ってる。手も伸ばしてる。\nでもママは、もう拭いてる。\n\nあれ、何回見てもすごい。\n\nいつか俺の方が早い日も来るのかな。\nとりあえず今日は、ママのバッグに予備を入れとこう。';
+const christmas='「クリスマスプレゼント、何がほしい？」\nって聞かれたら、パパは真っ先に「おしり拭き」って答える。\n\n子どもが麦茶をこぼした瞬間、こっちは「え、ティッシュどこ？」ってなってるのに、ママはもうバッグの外ポケットからおしり拭き出してる。\n\nあの速さ、何回見てもすごい。\n\nサンタさん、箱でお願いします。\n来年はパパが外ポケットに入れときます。';
+const next='おしり拭き、限定解除した方がいいんじゃない？\n\nヨーグルトがついた口。\n麦茶をこぼしたテーブル。\n床に落ちた、何か分からないベタベタ。\n\n「おしり」の二文字で引き受けていい仕事量じゃない。';
+const platforms={Threads:['＠','#5e4b92','https://www.threads.com/'],X:['𝕏','#26344c','https://x.com/compose/post'],Instagram:['◎','#a42b65','https://www.instagram.com/'],note:['n','#187b6b','https://note.com/notes/new']};
+let queue=[
+{id:'t1',p:'Threads',at:jp('15','50'),title:'サンタさん、箱でお願いします',body:christmas},
+{id:'x1',p:'X',at:jp('17','00'),title:'パパの三種の神器',body:first,reply:firstReply},
+{id:'i1',p:'Instagram',at:jp('16','15'),title:'パパは補給班',body:'子どもが麦茶をこぼした瞬間、パパもバッグに手を伸ばす。ファスナーを開けたときには、ママはもう拭いてる。やっぱりママはすごい。パパは補給班として、おしり拭きの予備を切らさないようにします。',art:true},
+{id:'x2',p:'X',at:jp('18','00'),title:'おしり拭き、限定解除',body:next},
+{id:'n1',p:'note',at:jp('19','00'),title:'パパがまだ使っていない、おしり拭き5選',draft:true,body:'秘密基地に置く予備と、外出時に持つ分を探し中。\n\n① 家の予備に｜レック 水99.9％ 80枚×20個\n② 厚手を試すなら｜ムーニー 水分たっぷり厚手 64枚×20個\n③ 携帯用｜Bc Babycare 超厚手 20枚×12パック\n④ フタ付き大判｜AIRFRIC 80枚×12個\n⑤ 箱で備える｜ピジョン おしりナップ やわらか厚手 80枚×40個\n\n使い心地は未確認。価格・サイズ・成分は公開前に照合する。'},
+];
+const key='marmoset-post-desk-v1';
+let state={done:{},copies:{},times:{}};try{state=JSON.parse(localStorage.getItem(key))||state}catch{}
+const saved=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{show('このブラウザでは進捗の保存ができません')}};
+const getTime=q=>state.times[q.id]??q.at;
+const hh=t=>new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(t);
+const h=(tag,css,txt)=>{const n=document.createElement(tag);if(css)n.className=css;if(txt)n.textContent=txt;return n};
+const btn=(txt,css,act)=>{const b=h('button',css,txt);b.onclick=act;return b};
+let timer;function show(s){const t=document.querySelector('#toast');t.textContent=s;t.hidden=false;clearTimeout(timer);timer=setTimeout(()=>t.hidden=true,4300)}
+async function copy(q){try{await navigator.clipboard.writeText(q.body)}catch{const a=h('textarea');a.value=q.body;a.style.position='fixed';a.style.opacity='0';document.body.append(a);a.select();let ok=false;try{ok=document.execCommand('copy')}finally{a.remove()}if(!ok){show('文章を選択してコピーしてください');return}}state.copies[q.id]=true;saved();render();show('コピーしました')}
+const freshFor=120*60000;
+const formatCount=new Intl.NumberFormat('ja-JP');
+const currentThreadsTime=()=>Math.floor(Date.now()/1800000)*1800000;
+function isFresh(item,now){
+  return item.postedAt<=item.checkedAt && item.checkedAt<=now && now-item.postedAt<=freshFor;
+}
+function importConversations(value){
+  const input=JSON.parse(value);
+  if(!Array.isArray(input)||input.length<1||input.length>20)throw Error('候補を1〜20件入れてください。');
+  const unique=new Map();
+  for(const item of input){
+    const url=new URL(item.url);
+    const post=url.pathname.match(/^\/@([\w.]+)\/post\/([\w-]+)\/?$/);
+    if(url.protocol!=='https:'||!['www.threads.com','threads.com','www.threads.net','threads.net'].includes(url.hostname)||!post)throw Error('Threadsの元投稿URLを確認してください。');
+    const [,handle,code]=post;
+    for(const field of ['summary','body','relevance']){
+      if(typeof item[field]!=='string'||!item[field].trim())throw Error('投稿要点・返信案・読者と重なる理由を入れてください。');
+    }
+    const postedAt=Date.parse(item.postedAt),checkedAt=Date.parse(item.checkedAt);
+    if(!Number.isFinite(postedAt)||!Number.isFinite(checkedAt)||!isFresh({postedAt,checkedAt},Date.now()))throw Error('投稿時刻と確認時刻が分かる直近2時間の候補を入れてください。');
+    if(!Number.isSafeInteger(item.likes)||item.likes<0)throw Error('確認できたいいね数を整数で入れてください。');
+    unique.set(code,{id:'threads-'+code,handle:'@'+handle,url:'https://www.threads.com'+url.pathname,postedAt,checkedAt,summary:item.summary,body:item.body,relevance:item.relevance,likes:item.likes});
+  }
+  state.conversations=[...unique.values()];
+  state.threadsSlot=currentThreadsTime();
+  saved();render();show('交流候補を取り込みました');
+}
+function conversationCard(){
+  const box=h('article');box.style.setProperty('--accent','#5e4b92');
+  const heading=h('div','row');
+  const now=Date.now(),slot=currentThreadsTime();
+  const verified=(state.conversations||[]).filter(item=>isFresh(item,now));
+  const pending=verified.filter(item=>!state.done[item.id]).sort((a,b)=>b.likes-a.likes||b.postedAt-a.postedAt);
+  heading.append(h('h2','','今日のThreads交流'),h('span','meta',hh(slot)+'枠'));
+  box.append(heading,h('p','small muted','30分ごとに1件。子育て・家事・買い出しで読者が重なる投稿を確認。'));
+  const intake=h('details');
+  intake.append(h('summary','','調査した候補を取り込む'));
+  const input=h('textarea');input.rows=4;input.style.width='100%';input.setAttribute('aria-label','交流候補のJSON');
+  input.placeholder='[{"url":"元投稿URL","postedAt":"投稿日時（ISO）","checkedAt":"確認日時（ISO）","likes":10000,"summary":"要点","body":"返信案","relevance":"読者と重なる理由"}]';
+  intake.append(h('p','small','1〜20件。公開のいいね数を比較します。'),input,btn('取り込む','',()=>{try{importConversations(input.value)}catch(e){show(e.message)}}));
+  const next=state.threadsSlot===slot&&state.repliedSlot!==slot ? pending[0] : undefined;
+  if(!next){
+    const status=state.repliedSlot===slot?'この枠は返信済みです。':state.threadsSlot===slot&&verified.length?'この枠の候補は確認済みです。':'この枠は未調査です。確認できた候補が入るまで返信案は表示されません。';
+    box.append(h('p','copytext',status),h('p','meta','次の確認 '+hh(slot+1800000)),intake);return box;
+  }
+  const link=h('a','button','元投稿を開く');link.href=next.url;link.target='_blank';link.rel='noopener';
+  box.append(h('p','meta',next.handle+' · '+(next.likes>=10000?'万バズ':'確認候補の上位')+' · '+formatCount.format(next.likes)+'いいね'),
+    h('p','small muted','投稿 '+hh(next.postedAt)+' ／ 確認 '+hh(next.checkedAt)+' ／ 比較 '+verified.length+'件'),
+    h('p','',next.summary),h('p','small muted','読者と重なる理由　'+next.relevance),h('p','copytext',next.body));
+  const actions=h('div','actions');
+  actions.append(link,btn(state.copies[next.id]?'✓ コピー済み':'返信案をコピー',state.copies[next.id]?'done':'primary',()=>copy(next)));
+  for(const [label,message] of [['返信済み','返信済みにしました'],['見送る','次の候補へ進みます']]){
+    actions.append(btn(label,'',()=>{state.done[next.id]=label;if(label==='返信済み')state.repliedSlot=slot;saved();render();show(message)}));
+  }
+  box.append(actions,intake);
+  return box;
+}
+const captions=[['麦茶、こぼれた！','子どものコップが倒れる。'],['パパも参戦','夫婦で一斉にバッグに手を伸ばす。'],['ママ、もう拭いてる','パパはまだファスナーを開けたところ。'],['パパは補給班','秘密基地に、おしり拭きの予備。']];
+const colors=['#f9ddce','#e3eafe','#fbe9ba','#daefe4'];
+function frame(i){const c=h('canvas');c.width=1080;c.height=1920;c.setAttribute('aria-label',captions[i].join('。'));const x=c.getContext('2d');x.fillStyle=colors[i];x.fillRect(0,0,1080,1920);x.fillStyle='#fff9';x.roundRect(65,195,950,1420,55);x.fill();x.fillStyle='#252840';x.font='bold 43px sans-serif';x.fillText('まーもせっと｜子育てパパの秘密基地',105,290);x.font='bold 80px sans-serif';x.fillText(captions[i][0],105,470);x.font='250px sans-serif';x.textAlign='center';x.fillText(['🥤','👜','💨','📦'][i],540,1000);x.font='42px sans-serif';x.fillText(captions[i][1],540,1360);x.font='bold 44px sans-serif';x.fillText((i+1)+' / 4',540,1510);return c}
+function testCard(){
+  const box=h('article');box.style.setProperty('--accent','#2857c6');
+  box.append(h('h2','','投稿A/Bテスト'),h('p','small muted','Xの親投稿を1日5本出す日の配分。A：返信にURLあり3本 ／ B：URLなし2本。親投稿の表示と読者からの返信を24時間後に比較します。'));
+  const date=h('input');date.type='date';date.value=state.testDate||new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Tokyo'}).format(Date.now());date.setAttribute('aria-label','テスト日');
+  date.onchange=()=>{if(date.value){state.testDate=date.value;saved();render()}};box.append(date);
+  const start=Date.parse('2026-11-24'),selected=Date.parse(date.value),shift=((Math.round((selected-start)/86400000)%5)+5)%5;
+  const groups=['B','A','B','A','A'];
+  const day=(state.testResults??={})[date.value]??={};
+  groups.forEach((_,i)=>{
+    const group=groups[(i+shift)%5],initial=date.value==='2026-11-24'&&i===0;
+    const row=h('details');row.open=initial;
+    row.append(h('summary','',`${i+1}本目 · ${group} · ${group==='A'?'返信にURLあり':'URLなし'}${initial?' · 17:00 パパの三種の神器':''}`));
+    const values=day[i]??={};
+    const fields=[['post','X投稿URL','url'],['views','24時間後の表示','number'],['replies','読者からの返信数','number']];
+    if(group==='A')fields.splice(1,0,['destination','返信のリンク先（楽天かnoteのどちらか）','url']);
+    for(const [key,label,type] of fields){
+      const wrap=h('label','pick small',label+' ');
+      const input=h('input');input.type=type;input.value=values[key]??'';input.style.maxWidth='100%';if(type==='number'){input.min='0';input.step='1'}
+      input.onchange=()=>{if(input.checkValidity()){values[key]=input.value;saved();updateSummary()}};
+      wrap.append(input);row.append(wrap);
+    }
+    if(group==='A')row.append(h('p','small muted','広告の回は本文とリンク付き返信のPR表示、およびXの有料パートナーシップ設定を確認。'));
+    box.append(row);
+  });
+  const outcome=h('p','small muted');
+  function updateSummary(){
+    const output=['A','B'].map(group=>{
+      const rows=groups.map((_,i)=>groups[(i+shift)%5]===group?day[i]:null).filter(row=>row&&row.views!==undefined&&row.views!=='');
+      const mean=rows.length?Math.round(rows.reduce((sum,row)=>sum+Number(row.views),0)/rows.length):null;
+      return group+' '+rows.length+'本'+(mean===null?'':'・平均 '+formatCount.format(mean)+'表示');
+    });
+    outcome.textContent=output.join(' ／ ');
+  }
+  updateSummary();box.append(outcome,h('p','small muted','日ごとにA/Bの順番をずらします。投稿数を増やせない日は空欄のままで大丈夫です。'));
+  return box;
+}
+function download(c,i){const a=h('a');a.download='marmoset-reel-'+(i+1)+'.png';a.href=c.toDataURL('image/png');a.click()}
+function card(p){const [mark,color,url]=platforms[p];const list=queue.filter(q=>q.p===p&&(!state.done[q.id]||(q.reply&&!state.done[q.id+'-reply']))).sort((a,b)=>getTime(a)-getTime(b));const q=list[0];const box=h('article');box.style.setProperty('--accent',color);const row=h('div','row');const id=h('div','identity');id.append(h('span','mark',mark),h('h2','',p));row.append(id,h('span','meta',q?(q.draft?'下書き · '+hh(getTime(q)):hh(getTime(q))+' · 残り'+list.length+'本'):'完了'));box.append(row);
+if(!q){box.append(h('p','muted','お疲れさま！ 次の原稿待ちです。'));return box}
+box.append(h('strong','',q.title));if(!q.draft&&getTime(q)>Date.now()&&queue.some(j=>j.p===p&&state.done[j.id]))box.append(h('p','muted','次は '+hh(getTime(q))+' 頃'));
+box.append(h('p','copytext',q.body));
+if(q.art){const frames=captions.map((_,i)=>frame(i));const art=h('div','frames');frames.forEach((c,i)=>{const a=h('a');a.title='素材'+(i+1)+'を保存';a.href='#';a.onclick=e=>{e.preventDefault();download(c,i)};a.append(c);art.append(a)});box.append(art,h('p','small muted','リール用の縦長PNG。押した画像を保存できます。'));box.append(btn('4枚をダウンロード','',()=>{frames.forEach(download);show('保存が1枚だけの場合は、各画像を押してください')}))}
+const actions=h('div','actions');actions.append(btn(state.copies[q.id]?'✓ コピー済み':'本文をコピー',state.copies[q.id]?'done':'primary',()=>copy(q)));
+if(!q.draft){const a=h('a','button',p+'を開く');a.href=url;a.target='_blank';a.rel='noopener';actions.append(a);if(!state.done[q.id])actions.append(btn('配信済みにする','',()=>{state.done[q.id]=true;saved();render();show(q.reply?'親投稿を記録しました。会話の返信が残っています。':'グッドジョブ！ '+p+' の投稿を完了しました')}));else actions.append(h('span','meta','✓ 親投稿済み'))}
+box.append(actions);
+if(q.reply){const reply={id:q.id+'-reply',body:q.reply};const detail=h('details');detail.open=true;detail.append(h('summary','','会話の返信 · URLなし'),h('p','copytext',q.reply),btn(state.copies[reply.id]?'✓ 返信コピー済み':'返信をコピー',state.copies[reply.id]?'done':'',()=>copy(reply)));
+if(state.done[q.id])for(const label of ['返信済み','返信を見送る'])detail.append(btn(label,'',()=>{state.done[reply.id]=label;saved();render();show('グッドジョブ！ 次の原稿に進みます。')}));
+box.append(detail)}
+const source=h('details');source.append(h('summary','','元ネタと今回の書き方'),h('p','small','なめたけ親父さんのX投稿。紹介記事で1.2万いいね。おむつ卒業後におしり拭きが切れ、家じゅうで頼っていたと気づく話。今回はママの手際と、予備を用意するパパの視点にした。元投稿の日付は未確認。'));const ref=h('a','small','ママリの掲載記事');ref.href='https://mamari.jp/77805';ref.target='_blank';ref.rel='noopener';source.append(ref);box.append(source);
+if(p==='note'){const d=h('details');d.append(h('summary','','商品返信の下書き'),h('p','copytext','【PR】箱で買うなら、レックの「水99.9％ おしりふき ふんわりシート 80枚×20個」が気になってます。家とお出かけバッグに分けて置くなら、この入り数は試してみたい。\n［発行した楽天アフィリエイトURL］'));box.append(d)}return box}
+function render(){const pending=queue.filter(q=>!q.draft&&!state.done[q.id]).sort((a,b)=>getTime(a)-getTime(b));const late=pending.filter(q=>getTime(q)<=Date.now());const banner=document.querySelector('#banner');banner.replaceChildren(h('strong','','未投稿 '+pending.length+'本 ／ 初回完了 '+['x1','t1','i1'].filter(id=>state.done[id]).length+' / 3'));
+if(late.length>=2){const group=h('div','actions');const times=late.map((_,i)=>Date.now()+i*900000);group.append(h('span','small late','時間超過 '+late.length+'本。組み直し案 '+times.map(hh).join(' → ')),btn('15分おきに組み直す','',()=>{late.forEach((q,i)=>state.times[q.id]=times[i]);saved();render();show('予定を変更しました')}));banner.append(group)}
+document.querySelector('#social').replaceChildren(...['Threads','X','Instagram'].map(card));const notes=document.querySelector('#notes');notes.classList.add('stack');notes.replaceChildren(card('note'),conversationCard(),testCard())}
+function tick(){document.querySelector('#clock').textContent=hh(Date.now())+' JST'}tick();render();setInterval(tick,1000);setInterval(()=>{if(!document.activeElement?.matches('button,a,summary,input,textarea'))render()},60000);
+</script></html>
