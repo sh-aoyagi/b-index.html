@@ -194,3 +194,7 @@ const baselineRender=render;
 render=function(){baselineRender();for(const b of document.querySelectorAll('button'))if(b.textContent==='4枚をダウンロード')b.textContent='5枚をダウンロード';for(const p of document.querySelectorAll('#social p.small'))if(p.textContent.startsWith('リール用の縦長PNG'))p.textContent='5カットの字幕・構成確認用。完成イラストは別素材です。';};
 document.querySelector('.clock span').textContent='11/24 · 16:30 テスト更新';render();
 </script>
+
+<script>
+{const r={"x":"妻とビーチフラッグ対決をしたことがありますか？\n\n３歳児が麦茶をこぼした瞬間、うちの勝負は始まる。\n\n「アー！」で夫婦そろってバッグへ。\n俺もおしり拭きを出せた。ママはもう拭いてた。\n\nママ素敵。俺のは、ママの予備だった。","t":"妻とビーチフラッグ対決をしたことがありますか？\n\nうちの子が麦茶をこぼした瞬間、夫婦の勝負は始まる。\n\n「アー！」で、ふたり同時にバッグへ手を伸ばす。\nよし、俺もおしり拭き出せた。\n\n横を見たら、ママはもう拭いて、コップまで起こしてる。\n\nすげえな。俺、まだ袋すら開けてない。\n\nそっとママのバッグに入れといた。\n俺のおしり拭き、出番はここだった。","r":"いい夫婦の日は終わったけど、ママのすごさは今日も更新された。\n\n麦茶を拭きながら、子どもに「大丈夫だよ」まで言ってる。\n\nいつか俺の方が早い日も来るのかな。\nとりあえず今日は、ママのバッグに予備を入れとこう。"}; for(const [id,body] of [["x1",r.x],["t1",r.t]]) Object.assign(queue.find(q=>q.id===id),{title:"妻とビーチフラッグ対決",at:jp("17","00"),body,reply:r.r}); const draw=conversationCard; conversationCard=function(){const card=draw();card.append(h("p","small muted","初回の交流：投稿に反応が来たら、麦茶の場面やママの手際の話で返信。新しい交流候補は直近2時間の確認済み投稿から。"));return card;}; document.querySelector(".clock span").textContent="11/24 · 17:00 X・Threads初回";render();}
+</script>
