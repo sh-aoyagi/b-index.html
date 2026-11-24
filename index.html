@@ -142,3 +142,55 @@ if(late.length>=2){const group=h('div','actions');const times=late.map((_,i)=>Da
 document.querySelector('#social').replaceChildren(...['Threads','X','Instagram'].map(card));const notes=document.querySelector('#notes');notes.classList.add('stack');notes.replaceChildren(card('note'),conversationCard(),testCard())}
 function tick(){document.querySelector('#clock').textContent=hh(Date.now())+' JST'}tick();render();setInterval(tick,1000);setInterval(()=>{if(!document.activeElement?.matches('button,a,summary,input,textarea'))render()},60000);
 </script></html>
+
+<script>
+queue.find(item=>item.id==='n1').title='おしり拭き5選｜バッグの予備と、家のストックを分けて選ぶ';
+queue.find(item=>item.id==='n1').body=`目次
+先に結論／価格・枚数比較／選び方／5商品／買い足さなくていい人／価格について
+
+先に結論
+バッグの予備なら20枚入り、家の補充棚なら80枚×20個。使う場所から選びます。今回の5商品はすべて未使用の候補です。
+
+価格・枚数比較
+レック 80枚×20個｜2,052円
+Bc Babycare 20枚×12個｜2,180円〜
+ムーニー 64枚×20個｜2,635円
+AIRFRIC 80枚×12個｜セット価格は要確認
+ピジョン 80枚×40個｜メーカー直販4,070円、楽天価格は要確認
+
+選び方は、この順で絞る
+置き場所 → 厚手・大判・フタ付きなどの条件 → 送料込みの1袋あたり価格。
+
+1. レック 水99.9％ ふんわりシート｜家の補充棚に置きたい人へ
+玄関近くに箱を置き、バッグの分が切れたら一袋足したい。
+［商品画像・楽天アフィリエイトURL］
+
+2. Bc Babycare 超厚手 携帯用｜バッグの予備を軽くしたい人へ
+20枚入り。外ポケットに収まるか確認したい。
+［商品画像・楽天アフィリエイトURL］
+
+3. ムーニー 水分たっぷり厚手 詰替｜家で厚手を使いたい人へ
+詰替タイプなので、手持ちの容器との相性も確認したい。
+［商品画像・楽天アフィリエイトURL］
+
+4. AIRFRIC WT001｜シートの大きさを優先する人へ
+シートは約18cm四方。バッグ用なら袋自体の寸法も確認。
+［商品画像・楽天アフィリエイトURL］
+
+5. ピジョン おしりナップ やわらか厚手｜家にストック場所がある人へ
+80枚入りが40袋。注文する前に、秘密基地の棚を一段空けます。
+［商品画像・楽天アフィリエイトURL］
+
+買い足さなくていい人
+家に予備があるなら、その一袋をママのバッグへ。それも補給班の仕事です。
+
+価格について
+2026年11月24日参照。価格と送料は購入前に販売ページで確認。
+公開時の表記：この記事にはアフィリエイトリンクが含まれます。リンク先で購入されると筆者に紹介料が入る場合があります。`;
+captions.splice(0,4,['おしり拭き、どっちが早い？','子どもが麦茶をこぼした。'],['パパもママも、持ってる。','ふたりとも自分のバッグから出す。'],['ママ、もう拭いてる。','パパも袋を手にしている。'],['パパ、ママのバッグに補充。','パパの予備を一袋。'],['パパ、心の俳句','ママ素敵 ✦／僕の用意は／ママの予備']);
+const baselineFrame=frame;
+frame=function(i){if(i<4)return baselineFrame(i);const c=h('canvas');c.width=1080;c.height=1920;c.setAttribute('aria-label','パパ、心の俳句');const ctx=c.getContext('2d');ctx.fillStyle='#111';ctx.fillRect(0,0,1080,1920);ctx.fillStyle='#fff';ctx.font='bold 70px serif';for(const [j,line] of ['ママ素敵 ✦','僕の用意は','ママの予備'].entries())for(const [k,character] of Array.from(line).entries())ctx.fillText(character,800-j*180,480+k*100);ctx.font='54px serif';ctx.fillText('パパ、心の俳句',110,1500);return c;};
+const baselineRender=render;
+render=function(){baselineRender();for(const b of document.querySelectorAll('button'))if(b.textContent==='4枚をダウンロード')b.textContent='5枚をダウンロード';for(const p of document.querySelectorAll('#social p.small'))if(p.textContent.startsWith('リール用の縦長PNG'))p.textContent='5カットの字幕・構成確認用。完成イラストは別素材です。';};
+document.querySelector('.clock span').textContent='11/24 · 16:30 テスト更新';render();
+</script>
